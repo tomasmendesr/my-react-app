@@ -9,7 +9,8 @@ class App extends Component {
       { name: 'Pepe', age: 12 },
       { name: 'Fede', age: 32}
     ],
-    otherState: 'some other value'
+    otherState: 'some other value',
+    showPersons: false
   }
 
   switchNameHandler = (newName) => {
@@ -33,7 +34,8 @@ class App extends Component {
   }
 
   togglePersonsHandler = () => {
-
+      const doesShow = this.state.showPersons;
+      this.setState({showPersons: !doesShow});
   }
 
   render() {
@@ -45,25 +47,34 @@ class App extends Component {
         cursor: 'pointer'
     };
 
+    let persons = null;
+
+    if (this.state.showPersons) {
+      persons = (
+        <div>
+            <Person 
+              name={this.state.persons[0].name} 
+              age={this.state.persons[0].age}/>
+            <Person 
+              name={this.state.persons[1].name} 
+              age={this.state.persons[1].age}
+              click={this.switchNameHandler.bind(this, 'Frodo')}
+              changed={this.nameChangedHandler}>My Hobbies: Ararar</Person>
+            <Person 
+              name={this.state.persons[2].name} 
+              age={this.state.persons[2].age}/>
+          </div> 
+      );
+    }
+
     return (
       <div className="App">
         <h1>Hi, i'm a react app</h1>
         <p>This is really working!</p>
         <button
           style={style} 
-          onClick={this.togglePersonsHandler}>Switch Name</button>
-        <Person 
-          name={this.state.persons[0].name} 
-          age={this.state.persons[0].age}/>
-        <Person 
-          name={this.state.persons[1].name} 
-          age={this.state.persons[1].age}
-          click={this.switchNameHandler.bind(this, 'Frodo')}
-          changed={this.nameChangedHandler}>My Hobbies: Ararar</Person>
-        <Person 
-          name={this.state.persons[2].name} 
-          age={this.state.persons[2].age}/>
-
+          onClick={this.togglePersonsHandler}>Toggle persons</button>
+        {persons}
       </div>
     );
    // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hi, I\'m a react app!!!'));
